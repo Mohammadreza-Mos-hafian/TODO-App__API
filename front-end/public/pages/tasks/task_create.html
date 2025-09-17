@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link
+      rel="shortcut icon"
+      href="../../images/icons/favicon.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/font.css" />
+    <link rel="stylesheet" href="../../css/app.css" />
+    <link rel="stylesheet" href="../../css/air-datepicker.min.css" />
+
+    <title>Task Management | Create Task</title>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container justify-content-between">
+          <h4 class="app_name text-white">
+            <a href="http://127.0.0.1:5500/public/index.html">Task Management</a>
+          </h4>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <h2 class="text-center mb-4">New Task</h2>
+
+          <form
+            action="#"
+            method="POST"
+            enctype="multipart/form-data"
+            class="card p-4 shadow-sm"
+          >
+            <div class="mb-3">
+              <label for="title" class="form-label w-100">
+                Title
+                <input
+                  type="text"
+                  class="form-control"
+                  id="title"
+                  name="title"
+                  value=""
+                />
+              </label>
+            </div>
+
+            <div class="mb-3">
+              <label for="deadline" class="form-label w-100">
+                deadline
+                <input
+                  type="text"
+                  class="form-control"
+                  id="deadline"
+                  name="deadline"
+                  placeholder="YYYY-MM-DD"
+                  value=""
+                  readonly
+                />
+              </label>
+            </div>
+
+            <div class="mb-3">
+              <label for="files" class="form-label w-100">
+                Files
+                <input
+                  type="file"
+                  name="files"
+                  class="form-control me-2"
+                  id="files"
+                  multiple="multiple"
+                />
+              </label>
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+
+              <textarea
+                class="form-control"
+                id="description"
+                name="description"
+                rows="4"
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100 mt-3">
+              Create
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <footer class="text-center mt-5">
+      <p>&copy;2025 Task Management | All rights reserved.</p>
+    </footer>
+
+    <script src="../../js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/air-datepicker.min.js"></script>
+    <script>
+      new AirDatepicker("#deadline", {
+        autoClose: true,
+        position: "bottom center",
+        isMobile: false,
+        timepicker: false,
+        inputFormat: "yyyy-mm-dd",
+        locale: {
+          days: [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+          ],
+          daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+          daysMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+          months: [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+          ],
+          monthsShort: [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ],
+          today: "Today",
+          clear: "Clear",
+          dateFormat: "yyyy-MM-dd",
+          firstDay: 0,
+        },
+      });
+    </script>
+  </body>
+</html>
