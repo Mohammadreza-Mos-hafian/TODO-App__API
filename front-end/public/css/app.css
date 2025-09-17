@@ -1,0 +1,16 @@
+body {
+    background-color: #1a1d20;
+    color: #fff3cd;
+}
+
+a {
+    text-decoration: none;
+    color: unset;
+}
+
+.card {
+    background-color: #212529;
+    color: #fff3cd;
+    box-shadow: 0 0 6px #1e1c1c7a !important;
+    border-radius: 8px;
+}
