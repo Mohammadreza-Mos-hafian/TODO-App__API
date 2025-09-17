@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link
+      rel="shortcut icon"
+      href="../../images/icons/favicon.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/font.css" />
+    <link rel="stylesheet" href="../../css/app.css" />
+
+    <title>Task Management | Files</title>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container justify-content-between">
+          <h4 class="app_name text-white">
+            <a href="http://127.0.0.1:5500/public/index.html">Task Management</a>
+          </h4>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container mt-5">
+      <h3 class="text-center mb-4">
+        Task Files : <span class="text-primary fs-4">Python</span>
+      </h3>
+
+      <div class="card shadow-sm p-4">
+        <div class="d-flex justify-content-end align-items-center mb-1">
+          <a href="../tasks/task_index.html" class="btn btn-secondary btn-sm"
+            >Back to tasks</a
+          >
+        </div>
+
+        <table class="table table-striped text-center table-dark">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Python file</td>
+              <td>
+                <a href="#" class="btn btn-success btn-sm">Download</a>
+                <a href="#" class="btn btn-danger btn-sm">Delete</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div>
+          <ul class="pagination justify-content-center">
+            <li class="page-item">
+              <a class="page-link text-bg-dark" href="#">&laquo;</a>
+            </li>
+
+            <li class="page-item">
+              <a class="page-link text-bg-dark" href="#">&lsaquo;</a>
+            </li>
+
+            <li class="page-item">
+              <a class="page-link text-bg-dark" href="#">1</a>
+            </li>
+
+            <li class="page-item">
+              <a class="page-link text-bg-dark" href="#">&rsaquo;</a>
+            </li>
+
+            <li class="page-item">
+              <a class="page-link text-bg-dark" href="#">&raquo;</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="mt-4">
+          <div class="d-flex justify-content-center align-items-center mb-1">
+            <h6 class="card-title">Add new files</h6>
+          </div>
+          <form
+            method="POST"
+            enctype="multipart/form-data"
+            action="#"
+            class="d-flex align-items-center"
+          >
+            <input
+              type="file"
+              name="files"
+              class="form-control me-2"
+              id="files"
+              multiple="multiple"
+            />
+
+            <button type="submit" class="btn btn-primary">Upload</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <footer class="text-center mt-5">
+      <p>&copy;2025 Task Management | All rights reserved.</p>
+    </footer>
+
+    <script src="../../js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
