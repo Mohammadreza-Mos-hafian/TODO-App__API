@@ -1,10 +1,14 @@
+from typing import Dict
+
 from sqlalchemy import select, and_
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.databases import SessionLocal
 from app.models import User
 
-import bcrypt
+from markupsafe import escape
+
+import bcrypt, re
 
 
 def encode(param: str):
@@ -30,3 +34,12 @@ def check_unique_email(email: str) -> bool | dict[str, str]:
                 "status": "DB Error",
                 "errors": str(err)
             }
+
+
+def clean_data(data: Dict[str, str]) -> Dict[str, str]:
+    for key, value in data.items():
+        if isinstance(data[key], str):
+            data[key] = escape(re.sub(r"<.*?>", "", value))
+            data[key] = re.sub(r"\s+", " ", data[key]).strip()
+    data["email"] = re.sub(r"[^\w@.\-]", "", data["email"]).lower()
+    return data
