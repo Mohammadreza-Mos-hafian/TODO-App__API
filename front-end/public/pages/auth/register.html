@@ -33,12 +33,7 @@
         <div class="col-md-6">
           <h2 class="text-center mb-4">Register</h2>
 
-          <form
-            action="http://127.0.0.1:5000/api/auth/register"
-            method="POST"
-            class="card p-4 shadow-sm"
-            id="registerForm"
-          >
+          <form class="card p-4 shadow-sm" id="registerForm">
             <div class="mb-3">
               <label for="first_name" class="form-label w-100">
                 First name
@@ -47,9 +42,9 @@
                   class="form-control"
                   id="first_name"
                   name="first_name"
-                  value=""
                 />
               </label>
+              <span class="text-danger error-message"></span>
             </div>
 
             <div class="mb-3">
@@ -60,9 +55,9 @@
                   class="form-control"
                   id="last_name"
                   name="last_name"
-                  value=""
                 />
               </label>
+              <span class="text-danger error-message"></span>
             </div>
 
             <div class="mb-3">
@@ -73,9 +68,9 @@
                   class="form-control"
                   id="email"
                   name="email"
-                  value=""
                 />
               </label>
+              <span class="text-danger error-message"></span>
             </div>
 
             <div class="mb-3">
@@ -98,6 +93,7 @@
                   style="right: 10px; bottom: 10px; cursor: pointer"
                 />
               </label>
+              <span class="text-danger error-message"></span>
             </div>
 
             <div class="mb-3">
@@ -112,7 +108,6 @@
                   id="confirmation_password"
                   name="confirmation_password"
                 />
-
                 <img
                   src="../../images/icons/eye_visible.png"
                   data-icon="confirmation_password"
@@ -120,6 +115,7 @@
                   style="right: 10px; bottom: 10px; cursor: pointer"
                 />
               </label>
+              <span class="text-danger error-message"></span>
             </div>
 
             <button
@@ -141,7 +137,10 @@
     <script src="../../js/bootstrap.bundle.min.js"></script>
     <script src="../../js/utils.js"></script>
     <script type="module">
-      import { registerUser } from "../../js/auth/auth.js";
+      import {
+        registerUser,
+        showErrorMessage,
+      } from "http://127.0.0.1:3000/public/js/auth/auth.js";
 
       document
         .getElementById("registerForm")
@@ -154,7 +153,17 @@
             document.getElementById("email").value,
             document.getElementById("password").value,
             document.getElementById("confirmation_password").value
-          );
+          )
+            .then((data) => {
+              if (data.status === "error") {
+                showErrorMessage(data.errors);
+              } else {
+                window.location.assign("../dashboard.html");
+              }
+            })
+            .catch((err) => {
+              console.error("Error:=>", err);
+            });
         });
     </script>
   </body>

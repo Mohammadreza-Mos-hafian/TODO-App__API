@@ -14,3 +14,7 @@ a {
     box-shadow: 0 0 6px #1e1c1c7a !important;
     border-radius: 8px;
 }
+
+.error-message{
+    font-size: 0.8rem;
+}
