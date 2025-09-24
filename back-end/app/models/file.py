@@ -24,10 +24,10 @@ class File(Base):
                                     primary_key=True)
     task_id: Mapped[int] = mapped_column(BigInteger, nullable=False)
     file_path: Mapped[str] = mapped_column(String(255), nullable=False)
-    original_name: Mapped[str] = mapped_column(String(64), nullable=False)
+    original_name: Mapped[str] = mapped_column(String(128), nullable=False)
     is_deleted: Mapped[bool] = mapped_column(Boolean, nullable=False, server_default=text('false'))
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False,
-                                                          server_default=text('CURRENT_TIMESTAMP'))
+                                                 server_default=text('CURRENT_TIMESTAMP'))
     updated_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, onupdate=func.now(),
                                                  server_default=text('CURRENT_TIMESTAMP'))
     deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime)
