@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Optional
 
-from sqlalchemy import BigInteger, Boolean, Date, DateTime, ForeignKeyConstraint, Identity, Integer, \
+from sqlalchemy import BigInteger, Boolean, Date, DateTime, CheckConstraint, ForeignKeyConstraint, Identity, Integer, \
     PrimaryKeyConstraint, SmallInteger, String, Text, text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -14,6 +14,7 @@ from app.databases import Base
 class Task(Base):
     __tablename__ = 'tasks'
     __table_args__ = (
+        CheckConstraint('status = ANY (ARRAY[0, 1, 2])', name='tasks_status_check'),
         ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE', onupdate='CASCADE',
                              name='tasks_user_id_fkey'),
         PrimaryKeyConstraint('id', name='tasks_pkey')
