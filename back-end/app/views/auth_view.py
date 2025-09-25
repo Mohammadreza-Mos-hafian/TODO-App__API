@@ -5,7 +5,7 @@ from app.services import AuthService
 
 
 class AuthView(View):
-    methods = ["GET", "POST"]
+    methods = ["POST"]
 
     def dispatch_request(self, *args, **kwargs):
         action = request.view_args.get("action")
@@ -16,9 +16,7 @@ class AuthView(View):
         if action == "login" and request.method == "POST":
             return self.login()
 
-        if action == "logout": return self.logout()
-
-        return None
+        return "Not fount", 404
 
     # ____________________________________________________ Register ____________________________________________________
     @staticmethod
@@ -34,8 +32,3 @@ class AuthView(View):
         data = request.get_json()
         response = AuthService.login_user(data)
         return jsonify(response)
-
-    # ____________________________________________________ Logout ____________________________________________________
-    @staticmethod
-    def logout():
-        pass
