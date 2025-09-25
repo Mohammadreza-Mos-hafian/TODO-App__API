@@ -1,1 +1,1 @@
-from .connection import engine, SessionLocal, Base, ma, SECRET_KEY
+from .connection import engine, SessionLocal, Base
