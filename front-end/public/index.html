@@ -48,5 +48,10 @@
     </footer>
 
     <script src="js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+      import { isAuthenticated } from "http://127.0.0.1:3000/public/js/auth/auth.js";
+
+      isAuthenticated();
+    </script>
   </body>
 </html>
