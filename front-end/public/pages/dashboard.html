@@ -6,7 +6,7 @@
 
     <link
       rel="shortcut icon"
-      href="../../images/icons/favicon.png"
+      href="../images/icons/favicon.png"
       type="image/x-icon"
     />
     <link rel="stylesheet" href="../css/bootstrap.min.css" />
@@ -18,10 +18,23 @@
   <body>
     <header class="header">
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container justify-content-between">
+        <div class="container d-flex justify-content-between">
           <h4 class="app_name text-white">
-            <a href="http://127.0.0.1:3000/public/index.html">Task Management</a>
+            <a href="http://127.0.0.1:3000/public/pages/dashboard.html"
+              >Task Management</a
+            >
           </h4>
+          <div class="d-flex align-items-center justify-content-center gap-2">
+            <span class="user-name text-white fs-6"></span>
+
+            <a class="btn text-bg-danger btn-sm">
+              <img
+                src="../images/icons/turn_off.svg"
+                alt="Turn off"
+                title="Logout"
+              />
+            </a>
+          </div>
         </div>
       </nav>
     </header>
@@ -51,5 +64,52 @@
     </footer>
 
     <script src="../js/bootstrap.bundle.min.js"></script>
+    <script>
+      const isAuthenticated = async (token) => {
+        try {
+          const response = await fetch(
+            "http://127.0.0.1:5000/api/dashboard/home",
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (!response.ok) {
+            localStorage.removeItem("access_token");
+            window.location.assign(
+              "http://127.0.0.1:3000/public/index.html"
+            );
+            return;
+          }
+
+          const data = await response.json();
+
+          document.querySelector(
+            ".user-name"
+          ).textContent = `${data.full_name}`;
+        } catch (err) {
+          console.error("Unexpected error:", err);
+          localStorage.removeItem("access_token");
+          window.location.assign(
+            "http://127.0.0.1:3000/public/index.html"
+          );
+        }
+      };
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        const token = localStorage.getItem("access_token");
+
+        if (!token) {
+          window.location.assign(
+            "http://127.0.0.1:3000/public/index.html"
+          );
+        } else {
+          isAuthenticated(token);
+        }
+      });
+    </script>
   </body>
 </html>
