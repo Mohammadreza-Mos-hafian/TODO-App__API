@@ -6,22 +6,31 @@ from app.models import User
 
 
 class UserRepository:
-    def __init__(self):
-        self.session = SessionLocal
-
-    def create(self, user: User):
-        with self.session() as session:
+    @staticmethod
+    def create(user: User) -> User:
+        with SessionLocal() as session:
             try:
                 session.add(user)
                 session.commit()
-                return {
-                    "status": "success",
-                    "message": "User registration was successful.",
-                }
+                session.refresh(user)
+
+                return user
             except SQLAlchemyError as err:
                 session.rollback()
+                raise err
 
-                return {
-                    "status": "DB Error",
-                    "errors": str(err)
-                }
+    @staticmethod
+    def get_user(uuid):
+        with SessionLocal() as session:
+            try:
+                stmt = (
+                    select(User)
+                    .where(
+                        User.uuid == uuid,
+                        User.is_deleted == False
+                    )
+                )
+
+                return session.execute(stmt).scalars().first()
+            except SQLAlchemyError as err:
+                raise err
