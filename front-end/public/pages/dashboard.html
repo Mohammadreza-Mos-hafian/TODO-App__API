@@ -27,13 +27,13 @@
           <div class="d-flex align-items-center justify-content-center gap-2">
             <span class="user-name text-white fs-6"></span>
 
-            <a class="btn text-bg-danger btn-sm">
+            <button type="button" class="btn text-bg-danger btn-sm" id="logoutBtn">
               <img
                 src="../images/icons/turn_off.svg"
                 alt="Turn off"
                 title="Logout"
               />
-            </a>
+            </button type="button">
           </div>
         </div>
       </nav>
@@ -110,6 +110,14 @@
           isAuthenticated(token);
         }
       });
+    </script>
+    <script>
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        localStorage.removeItem("access_token")
+        localStorage.removeItem("refresh_token")
+        
+        window.location.assign("http://127.0.0.1:3000/public/index.html")
+      })
     </script>
   </body>
 </html>
