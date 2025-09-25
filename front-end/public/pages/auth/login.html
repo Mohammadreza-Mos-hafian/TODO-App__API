@@ -33,7 +33,9 @@
         <div class="col-md-6">
           <h2 class="text-center mb-4">Login</h2>
 
-          <form action="#" method="POST" class="card p-4 shadow-sm">
+          <div class="alert alert-danger d-none" role="alert"></div>
+
+          <form class="card p-4 shadow-sm" id="loginForm">
             <div class="mb-3">
               <label for="email" class="form-label w-100">
                 Email
@@ -42,9 +44,9 @@
                   class="form-control"
                   id="email"
                   name="email"
-                  value=""
                 />
               </label>
+              <span class="text-danger error-message"></span>
             </div>
 
             <div class="mb-3">
@@ -65,13 +67,17 @@
                   alt="eye_visible"
                   data-icon="password"
                   class="position-absolute z-3 toggle-password"
-                  id="pEyeIcon"
                   style="right: 10px; bottom: 10px; cursor: pointer"
                 />
               </label>
+              <span class="text-danger error-message"></span>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100 mt-3">
+            <button
+              type="submit"
+              class="btn btn-primary w-100 mt-3"
+              id="registerSubmitBtn"
+            >
               Login
             </button>
           </form>
@@ -85,5 +91,53 @@
 
     <script src="../../js/bootstrap.bundle.min.js"></script>
     <script src="../../js/utils.js"></script>
+    <script type="module">
+      import {
+        loginUser,
+        showErrorMessages,
+        refreshErrors,
+        isAuthenticated,
+      } from "../../js/auth/auth.js";
+
+      isAuthenticated();
+
+      const alertElem = document.querySelector(".alert");
+
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          refreshErrors();
+
+          try {
+            const response = await loginUser(
+              document.getElementById("email").value,
+              document.getElementById("password").value
+            );
+
+            if (response.status == "error") {
+              showErrorMessages(response.errors);
+            } else if (
+              response.status === "Auth Error" ||
+              response.status === "DB Error"
+            ) {
+              alertElem.textContent = response.errors;
+              alertElem.classList.remove("d-none");
+            } else {
+              localStorage.setItem("access_token", response.access_token);
+              localStorage.setItem("refresh_token", response.refresh_token);
+
+              window.location.assign(
+                "http://127.0.0.1:3000/public/pages/dashboard.html"
+              );
+            }
+          } catch (err) {
+            console.error("Unexpected error:", err);
+            alertElem.textContent = "An unknown error has occurred.";
+            alertElem.classList.remove("d-none");
+          }
+        });
+    </script>
   </body>
 </html>
