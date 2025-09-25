@@ -1,3 +1,4 @@
+import uuid
 from typing import Dict
 
 from sqlalchemy import select, and_
@@ -8,6 +9,8 @@ from app.models import User
 
 from markupsafe import escape
 
+from datetime import datetime, timezone
+
 import bcrypt, re
 
 
@@ -16,24 +19,52 @@ def encode(param: str):
     return hash_param.decode()
 
 
-def check_unique_email(email: str) -> bool | dict[str, str]:
+def now_utc():
+    return datetime.now(timezone.utc)
+
+
+def create_uuid4() -> str:
+    return str(uuid.uuid4())
+
+
+def check_unique_email(email: str):
     with SessionLocal() as session:
         try:
             stmt = (
-                select(User).where(and_(
+                select(User).where(
                     User.email == email,
-                    User.is_deleted == False,
+                    User.is_deleted == False
+                )
+            )
+
+            if session.execute(stmt).scalar():
+                raise ValueError("The email already exists.")
+
+        except SQLAlchemyError as err:
+            session.rollback()
+            raise err
+
+
+def check_user(email: str, password: str):
+    with SessionLocal() as session:
+        try:
+            stmt = (
+                select(User)
+                .where(and_(
+                    User.email == email,
+                    User.is_deleted == False
                 ))
             )
 
-            return False if session.execute(stmt).first() else True
+            user: User = session.execute(stmt).scalars().first()
+
+            if not user or not bcrypt.checkpw(password.encode(), user.password.encode()):
+                raise ValueError("Email or password is incorrect.")
+
+            return user
         except SQLAlchemyError as err:
             session.rollback()
-
-            return {
-                "status": "DB Error",
-                "errors": str(err)
-            }
+            raise err
 
 
 def clean_data(data: Dict[str, str]) -> Dict[str, str]:
@@ -41,5 +72,5 @@ def clean_data(data: Dict[str, str]) -> Dict[str, str]:
         if isinstance(data[key], str):
             data[key] = escape(re.sub(r"<.*?>", "", value))
             data[key] = re.sub(r"\s+", " ", data[key]).strip()
-    data["email"] = re.sub(r"[^\w@.\-]", "", data["email"]).lower()
+
     return data
