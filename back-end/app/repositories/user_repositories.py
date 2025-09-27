@@ -20,7 +20,7 @@ class UserRepository:
                 raise err
 
     @staticmethod
-    def get_user(uuid):
+    def get_user(uuid: str):
         with SessionLocal() as session:
             try:
                 stmt = (
