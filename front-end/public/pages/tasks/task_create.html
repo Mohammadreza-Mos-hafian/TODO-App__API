@@ -21,7 +21,9 @@
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container justify-content-between">
           <h4 class="app_name text-white">
-            <a href="http://127.0.0.1:3000/public/index.html">Task Management</a>
+            <a href="http://127.0.0.1:3000/public/pages/dashboard.html"
+              >Task Management</a
+            >
           </h4>
         </div>
       </nav>
@@ -32,11 +34,12 @@
         <div class="col-md-8">
           <h2 class="text-center mb-4">New Task</h2>
 
+          <div class="alert alert-danger d-none" role="alert"></div>
+
           <form
-            action="#"
-            method="POST"
             enctype="multipart/form-data"
             class="card p-4 shadow-sm"
+            id="createTaskForm"
           >
             <div class="mb-3">
               <label for="title" class="form-label w-100">
@@ -46,9 +49,10 @@
                   class="form-control"
                   id="title"
                   name="title"
-                  value=""
                 />
               </label>
+
+              <span class="text-danger error-message"></span>
             </div>
 
             <div class="mb-3">
@@ -60,10 +64,10 @@
                   id="deadline"
                   name="deadline"
                   placeholder="YYYY-MM-DD"
-                  value=""
-                  readonly
                 />
               </label>
+
+              <span class="text-danger error-message"></span>
             </div>
 
             <div class="mb-3">
@@ -77,6 +81,8 @@
                   multiple="multiple"
                 />
               </label>
+
+              <span class="text-danger error-message"></span>
             </div>
 
             <div class="mb-3">
@@ -88,6 +94,8 @@
                 name="description"
                 rows="4"
               ></textarea>
+
+              <span class="text-danger error-message"></span>
             </div>
 
             <button type="submit" class="btn btn-success w-100 mt-3">
@@ -99,18 +107,24 @@
     </div>
 
     <footer class="text-center mt-5">
-      <p>&copy;2025 Task Management | All rights reserved.</p>
+      <p>
+        &copy;<span class="year"></span> Task Management | All rights reserved.
+      </p>
     </footer>
 
     <script src="../../js/bootstrap.bundle.min.js"></script>
     <script src="../../js/air-datepicker.min.js"></script>
+    <script src="../../js/app.js"></script>
     <script>
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
       new AirDatepicker("#deadline", {
         autoClose: true,
         position: "bottom center",
-        isMobile: false,
         timepicker: false,
         inputFormat: "yyyy-mm-dd",
+        minDate: today,
         locale: {
           days: [
             "Sunday",
@@ -157,6 +171,47 @@
           firstDay: 0,
         },
       });
+    </script>
+
+    <script type="module">
+      import { createTask } from "../../js/tasks/task.js";
+      import { showErrorMessages, refreshErrors } from "../../js/utils.js";
+
+      const alertElem = document.querySelector(".alert");
+
+      document
+        .getElementById("createTaskForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          refreshErrors();
+
+          try {
+            const response = await createTask(
+              document.getElementById("title").value,
+              document.getElementById("deadline").value,
+              document.getElementById("description").value,
+              localStorage.getItem("access_token")
+            );
+
+            if (response.status === "error") {
+              showErrorMessages(response.errors);
+            } else if (response.status === "DB Error") {
+              alertElem.textContent = response.errors;
+              alertElem.classList.remove("d-none");
+            } else {
+              setTimeout(() => {
+                window.location.assign(
+                  "http://127.0.0.1:3000/public/pages/tasks/task_index.html"
+                );
+              }, 500);
+            }
+          } catch (err) {
+            console.error("Unexpected error:", err);
+            alertElem.textContent = "An unknown error has occurred.";
+            alertElem.classList.remove("d-none");
+          }
+        });
     </script>
   </body>
 </html>

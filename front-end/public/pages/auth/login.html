@@ -86,18 +86,23 @@
     </div>
 
     <footer class="text-center mt-5">
-      <p>&copy;2025 Task Management | All rights reserved.</p>
+      <p>&copy;<span class="year"></span> Task Management | All rights reserved.</p>
     </footer>
 
     <script src="../../js/bootstrap.bundle.min.js"></script>
-    <script src="../../js/utils.js"></script>
+    <script src="../../js/app.js"></script>
     <script type="module">
+      import { toggleEyeIcon } from "../../js/utils.js";
+
+      toggleEyeIcon();
+    </script>
+    <script type="module">
+      import { loginUser } from "../../js/auth/auth.js";
       import {
-        loginUser,
         showErrorMessages,
         refreshErrors,
         isAuthenticated,
-      } from "../../js/auth/auth.js";
+      } from "../../js/utils.js";
 
       isAuthenticated();
 
@@ -128,9 +133,11 @@
               localStorage.setItem("access_token", response.access_token);
               localStorage.setItem("refresh_token", response.refresh_token);
 
-              window.location.assign(
-                "http://127.0.0.1:3000/public/pages/dashboard.html"
-              );
+              setTimeout(() => {
+                window.location.assign(
+                  "http://127.0.0.1:3000/public/pages/dashboard.html"
+                );
+              }, 500);
             }
           } catch (err) {
             console.error("Unexpected error:", err);

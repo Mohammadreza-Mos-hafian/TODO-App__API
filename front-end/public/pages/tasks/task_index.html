@@ -1,97 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link rel="shortcut icon" href="../../images/icons/favicon.png" type="image/x-icon">
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../css/font.css">
-    <link rel="stylesheet" href="../../css/app.css">
+    <link
+      rel="shortcut icon"
+      href="../../images/icons/favicon.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/font.css" />
+    <link rel="stylesheet" href="../../css/app.css" />
 
     <title>Task Management | Tasks</title>
-</head>
-<body>
-<header class="header">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container justify-content-between">
-            <h4 class="app_name text-white">
-                <a href="http://127.0.0.1:3000/public/index.html">Task Management</a>
-            </h4>
+          <h4 class="app_name text-white">
+            <a href="http://127.0.0.1:3000/public/pages/dashboard.html"
+              >Task Management</a
+            >
+          </h4>
         </div>
-    </nav>
-</header>
+      </nav>
+    </header>
 
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Tasks list</h2>
+    <div class="container mt-5">
+      <h2 class="text-center mb-4">Tasks list</h2>
 
-    <table class="table table-striped text-center table-dark">
+      <table class="table table-striped text-center table-dark">
         <thead>
-        <tr>
+          <tr>
             <th>#</th>
             <th>Title</th>
             <th>Status</th>
             <th>Deadline</th>
             <th>Actions</th>
-        </tr>
+          </tr>
         </thead>
 
         <tbody>
-        <tr>
+          <tr>
             <td>1</td>
             <td>Python</td>
             <td>
-                <span class="badge text-bg-success">Completed</span>
+              <span class="badge text-bg-success">Completed</span>
             </td>
             <td>2025-09-16</td>
             <td>
-                <a href="../tasks/task_edit.html"
-                   class="btn btn-primary btn-sm">Edit</a>
+              <a href="../tasks/task_edit.html" class="btn btn-primary btn-sm"
+                >Edit</a
+              >
 
-                <a href="#"
-                   class="btn btn-danger btn-sm">Delete</a>
+              <a href="#" class="btn btn-danger btn-sm">Delete</a>
 
-                <a href="../files/file_index.html"
-                   class="btn btn-secondary btn-sm">Files</a>
+              <a
+                href="../files/file_index.html"
+                class="btn btn-secondary btn-sm"
+                >Files</a
+              >
             </td>
-        </tr>
+          </tr>
         </tbody>
-    </table>
+      </table>
 
-    <div>
+      <div>
         <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <a class="page-link text-bg-dark"
-                   href="#">&laquo;</a>
-            </li>
+          <li class="page-item">
+            <a class="page-link text-bg-dark" href="#">&laquo;</a>
+          </li>
 
-            <li class="page-item">
-                <a class="page-link text-bg-dark"
-                   href="#">&lsaquo;</a>
-            </li>
+          <li class="page-item">
+            <a class="page-link text-bg-dark" href="#">&lsaquo;</a>
+          </li>
 
-            <li class="page-item">
-                <a class="page-link text-bg-dark"
-                   href="#">1</a>
-            </li>
+          <li class="page-item">
+            <a class="page-link text-bg-dark" href="#">1</a>
+          </li>
 
-            <li class="page-item">
-                <a class="page-link text-bg-dark"
-                   href="#">&rsaquo;</a>
-            </li>
+          <li class="page-item">
+            <a class="page-link text-bg-dark" href="#">&rsaquo;</a>
+          </li>
 
-            <li class="page-item">
-                <a class="page-link text-bg-dark"
-                   href="#">&raquo;</a>
-            </li>
+          <li class="page-item">
+            <a class="page-link text-bg-dark" href="#">&raquo;</a>
+          </li>
         </ul>
+      </div>
     </div>
-</div>
 
-<footer class="text-center mt-5">
-    <p>&copy;2025 Task Management | All rights reserved.</p>
-</footer>
+    <footer class="text-center mt-5">
+      <p>
+        &copy;<span class="year"></span> Task Management | All rights reserved.
+      </p>
+    </footer>
 
-<script src="../../js/bootstrap.bundle.min.js"></script>
-</body>
+    <script src="../../js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/app.js"></script>
+  </body>
 </html>

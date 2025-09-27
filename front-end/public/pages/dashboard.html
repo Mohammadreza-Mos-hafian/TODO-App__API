@@ -60,10 +60,11 @@
     </div>
 
     <footer class="text-center mt-5">
-      <p>&copy;2025 Task Management | All rights reserved.</p>
+      <p>&copy;<span class="year"></span> Task Management | All rights reserved.</p>
     </footer>
 
     <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/app.js"></script>
     <script>
       const isAuthenticated = async (token) => {
         try {
@@ -116,7 +117,9 @@
         localStorage.removeItem("access_token")
         localStorage.removeItem("refresh_token")
         
-        window.location.assign("http://127.0.0.1:3000/public/index.html")
+        setTimeout(() => {
+          window.location.assign("http://127.0.0.1:3000/public/index.html")
+        }, 500)
       })
     </script>
   </body>

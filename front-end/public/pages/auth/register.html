@@ -133,18 +133,23 @@
     </div>
 
     <footer class="text-center mt-5">
-      <p>&copy;2025 Task Management | All rights reserved.</p>
+      <p>&copy;<span class="year"></span> Task Management | All rights reserved.</p>
     </footer>
 
     <script src="../../js/bootstrap.bundle.min.js"></script>
-    <script src="../../js/utils.js"></script>
+    <script src="../../js/app.js"></script>
     <script type="module">
+      import { toggleEyeIcon } from "../../js/utils.js";
+
+      toggleEyeIcon();
+    </script>
+    <script type="module">
+      import { registerUser } from "../../js/auth/auth.js";
       import {
-        registerUser,
         showErrorMessages,
         refreshErrors,
         isAuthenticated,
-      } from "../../js/auth/auth.js";
+      } from "../../js/utils.js";
 
       isAuthenticated();
 
@@ -152,39 +157,43 @@
 
       document
         .getElementById("registerForm")
-        .addEventListener("submit", (e) => {
+        .addEventListener("submit", async (e) => {
           e.preventDefault();
 
           refreshErrors();
 
-          registerUser(
-            document.getElementById("first_name").value,
-            document.getElementById("last_name").value,
-            document.getElementById("email").value,
-            document.getElementById("password").value,
-            document.getElementById("confirmation_password").value
-          )
-            .then((data) => {
-              if (data.status === "error") {
-                showErrorMessages(data.errors);
-              } else if (
-                data.status === "Auth Error" ||
-                data.status == "DB Error"
-              ) {
-                alertElem.textContent = data.errors;
-                alertElem.classList.remove("d-none");
-              } else {
-                localStorage.setItem("access_token", data.access_token);
-                localStorage.setItem("refresh_token", data.refresh_token);
+          try {
+            const response = await registerUser(
+              document.getElementById("first_name").value,
+              document.getElementById("last_name").value,
+              document.getElementById("email").value,
+              document.getElementById("password").value,
+              document.getElementById("confirmation_password").value
+            );
 
+            if (response.status === "error") {
+              showErrorMessages(response.errors);
+            } else if (
+              response.status === "Auth Error" ||
+              response.status == "DB Error"
+            ) {
+              alertElem.textContent = response.errors;
+              alertElem.classList.remove("d-none");
+            } else {
+              localStorage.setItem("access_token", response.access_token);
+              localStorage.setItem("refresh_token", response.refresh_token);
+
+              setTimeout(() => {
                 window.location.assign(
                   "http://127.0.0.1:3000/public/pages/dashboard.html"
                 );
-              }
-            })
-            .catch((err) => {
-              console.error("Error =>", err);
-            });
+              }, 500);
+            }
+          } catch (err) {
+            console.error("Unexpected error:", err);
+            alertElem.textContent = "An unknown error has occurred.";
+            alertElem.classList.remove("d-none");
+          }
         });
     </script>
   </body>
