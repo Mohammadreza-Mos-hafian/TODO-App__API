@@ -16,7 +16,10 @@ class AuthView(View):
         if action == "login" and request.method == "POST":
             return self.login()
 
-        return "Not fount", 404
+        return jsonify({
+            "status": "error",
+            "message": "Page not found",
+        }), 404
 
     # ____________________________________________________ Register ____________________________________________________
     @staticmethod
