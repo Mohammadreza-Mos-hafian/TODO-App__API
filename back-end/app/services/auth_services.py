@@ -15,16 +15,16 @@ class AuthService:
         schema = RegisterSchema()
 
         try:
-            user = schema.load(data, session=SessionLocal)
-            check_unique_email(user.email)
+            credentials = schema.load(data, session=SessionLocal)
+            check_unique_email(credentials.email)
 
-            user.password = encode(user.password)
-            user_repo = UserRepository.create(user)
+            credentials.password = encode(credentials.password)
+            user = UserRepository.create(credentials)
 
             return {
                 "status": "success",
-                "access_token": JWTService.create_access_token(str(user_repo.uuid)),
-                "refresh_token": JWTService.create_refresh_token(str(user_repo.uuid))
+                "access_token": JWTService.create_access_token(str(user.uuid)),
+                "refresh_token": JWTService.create_refresh_token(str(user.uuid))
             }
         except ValidationError as err:
             return {
