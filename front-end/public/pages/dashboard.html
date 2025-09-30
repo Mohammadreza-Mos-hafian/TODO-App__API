@@ -51,8 +51,9 @@
 
   <script src="../js/bootstrap.bundle.min.js"></script>
   <script src="../js/app.js"></script>
+
   <script type="module">
-    import { apiRequest } from "../js/utils.js";
+    import { apiRequest, showUserName } from "../js/utils.js";
 
     document.addEventListener("DOMContentLoaded", async () => {
       if (!localStorage.getItem("access_token") && !localStorage.getItem("refresh_token")) {
@@ -69,23 +70,14 @@
           }
         })
 
-        document.querySelector(".user-name").textContent = response.data.full_name;
+        localStorage.setItem("full_name", response.data.full_name)
+        showUserName();
       } catch (err) {
         console.error("Unexpected error:", err);
       }
     });
   </script>
 
-  <script>
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      localStorage.removeItem("access_token")
-      localStorage.removeItem("refresh_token")
-
-      setTimeout(() => {
-        window.location.assign("http://127.0.0.1:3000/public/index.html")
-      }, 500)
-    })
-  </script>
 </body>
 
 </html>
