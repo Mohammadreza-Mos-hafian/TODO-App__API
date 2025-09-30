@@ -1,11 +1,11 @@
 /*--------------------------- Post Task Data --------------------------- */
-export const createTask = async (title, deadline, description = "", token) => {
+export const createTask = async (title, deadline, description = "") => {
   try {
     const response = await fetch("http://127.0.0.1:5000/api/tasks/", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
       body: JSON.stringify({
         title: title,
@@ -29,3 +29,5 @@ export const createTask = async (title, deadline, description = "", token) => {
     };
   }
 };
+
+
