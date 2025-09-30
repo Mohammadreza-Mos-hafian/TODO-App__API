@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, jsonify
 from flask.views import MethodView
 from flask_jwt_extended import jwt_required
 
@@ -9,19 +9,19 @@ class TaskView(MethodView):
     decorators = [jwt_required()]
 
     @staticmethod
-    def get(uuid: str):
+    def get(user_uuid: str):
         pass
 
     @staticmethod
     def post():
         data = request.get_json()
         response = TaskService.create_task(data)
-        return response
+        return jsonify(response)
 
     @staticmethod
-    def put(uuid: str):
+    def put(user_uuid: str):
         pass
 
     @staticmethod
-    def delete(uuid: str):
+    def delete(user_uuid: str):
         pass
