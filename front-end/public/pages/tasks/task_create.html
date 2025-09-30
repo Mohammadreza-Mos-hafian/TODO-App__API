@@ -174,8 +174,11 @@
     </script>
 
     <script type="module">
-      import { createTask } from "../../js/tasks/task.js";
-      import { showErrorMessages, refreshErrors } from "../../js/utils.js";
+      import {
+        apiRequest,
+        showErrorMessages,
+        refreshErrors,
+      } from "../../js/utils.js";
 
       const alertElem = document.querySelector(".alert");
 
@@ -187,24 +190,30 @@
           refreshErrors();
 
           try {
-            const response = await createTask(
-              document.getElementById("title").value,
-              document.getElementById("deadline").value,
-              document.getElementById("description").value,
-              localStorage.getItem("access_token")
+            const response = await apiRequest(
+              "http://127.0.0.1:5000/api/tasks/",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  title: document.getElementById("title").value,
+                  deadline: document.getElementById("deadline").value,
+                  description: document.getElementById("description").value,
+                }),
+              }
             );
 
-            if (response.status === "error") {
-              showErrorMessages(response.errors);
-            } else if (response.status === "DB Error") {
-              alertElem.textContent = response.errors;
-              alertElem.classList.remove("d-none");
-            } else {
+            if (response.data.status === "success") {
               setTimeout(() => {
                 window.location.assign(
                   "http://127.0.0.1:3000/public/pages/tasks/task_index.html"
                 );
               }, 500);
+            } else if (response.data.status === "error") {
+              showErrorMessages(response.data.errors);
+            } else if (response.data.status == "DB Error") {
+              alertElem.textContent = response.data.errors;
+              alertElem.classList.remove("d-none");
             }
           } catch (err) {
             console.error("Unexpected error:", err);
