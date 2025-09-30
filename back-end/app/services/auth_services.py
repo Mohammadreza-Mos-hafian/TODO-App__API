@@ -1,3 +1,6 @@
+from flask_jwt_extended import get_jwt_identity
+from flask import make_response, jsonify
+
 from marshmallow import ValidationError
 
 from sqlalchemy.exc import SQLAlchemyError
@@ -53,7 +56,7 @@ class AuthService:
             return {
                 "status": "success",
                 "access_token": JWTService.create_access_token(str(current_user.uuid)),
-                "refresh_token": JWTService.create_refresh_token(str(current_user.uuid)),
+                "refresh_token": JWTService.create_refresh_token(str(current_user.uuid))
             }
 
         except ValidationError as err:
@@ -71,3 +74,12 @@ class AuthService:
                 "status": "Auth Error",
                 "errors": str(err)
             }
+
+    @staticmethod
+    def create_new_access_token():
+        resp = make_response(jsonify({
+            "status": "success",
+            "access_token": JWTService.create_access_token(str(get_jwt_identity()))
+        }))
+
+        return resp
