@@ -57,3 +57,59 @@ export const isAuthenticated = () => {
     }
   });
 };
+
+/*--------------------------- Check Access Token --------------------------- */
+
+export const apiRequest = async (url, options = {}) => {
+  try {
+    let response = await fetch(url, {
+      ...options,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        ...options.headers,
+      },
+    });
+
+    if (response.status == 401) {
+      const refreshToken = localStorage.getItem("refresh_token");
+
+      if (!refreshToken) {
+        localStorage.removeItem("access_token");
+
+        return { status: "error", message: "No refresh token" };
+      }
+
+      const refreshRes = await fetch("http://127.0.0.1:5000/api/auth/refresh", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${refreshToken}`,
+        },
+      });
+
+      if (refreshRes.ok) {
+        const data = await refreshRes.json();
+        localStorage.setItem("access_token", data.access_token);
+
+        response = await fetch(url, {
+          ...options,
+          headers: {
+            Authorization: `Bearer ${data.access_token}`,
+            ...options.headers,
+          },
+        });
+
+        return { status: "success", data: await response.json() };
+      } else {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+
+        return { status: "unauthorized", message: "Invalid refresh token" };
+      }
+    }
+
+    return { status: "success", data: await response.json() };
+  } catch (err) {
+    return { status: "error", message: err.message || err };
+  }
+};
