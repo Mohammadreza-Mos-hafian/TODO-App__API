@@ -133,7 +133,9 @@
     </div>
 
     <footer class="text-center mt-5">
-      <p>&copy;<span class="year"></span> Task Management | All rights reserved.</p>
+      <p>
+        &copy;<span class="year"></span> Task Management | All rights reserved.
+      </p>
     </footer>
 
     <script src="../../js/bootstrap.bundle.min.js"></script>
@@ -144,7 +146,6 @@
       toggleEyeIcon();
     </script>
     <script type="module">
-      import { registerUser } from "../../js/auth/auth.js";
       import {
         showErrorMessages,
         refreshErrors,
@@ -163,25 +164,38 @@
           refreshErrors();
 
           try {
-            const response = await registerUser(
-              document.getElementById("first_name").value,
-              document.getElementById("last_name").value,
-              document.getElementById("email").value,
-              document.getElementById("password").value,
-              document.getElementById("confirmation_password").value
+            const response = await fetch(
+              "http://127.0.0.1:5000/api/auth/register",
+              {
+                method: "POST",
+                headers: {
+                  "Content-type": "application/json",
+                },
+                body: JSON.stringify({
+                  first_name: document.getElementById("first_name").value,
+                  last_name: document.getElementById("last_name").value,
+                  email: document.getElementById("email").value,
+                  password: document.getElementById("password").value,
+                  confirmation_password: document.getElementById(
+                    "confirmation_password"
+                  ).value,
+                }),
+              }
             );
 
-            if (response.status === "error") {
-              showErrorMessages(response.errors);
+            const data = await response.json();
+
+            if (data.status === "error") {
+              showErrorMessages(data.errors);
             } else if (
-              response.status === "Auth Error" ||
-              response.status == "DB Error"
+              data.status === "Auth Error" ||
+              data.status == "DB Error"
             ) {
-              alertElem.textContent = response.errors;
+              alertElem.textContent = data.errors;
               alertElem.classList.remove("d-none");
             } else {
-              localStorage.setItem("access_token", response.access_token);
-              localStorage.setItem("refresh_token", response.refresh_token);
+              localStorage.setItem("access_token", data.access_token);
+              localStorage.setItem("refresh_token", data.refresh_token);
 
               setTimeout(() => {
                 window.location.assign(
