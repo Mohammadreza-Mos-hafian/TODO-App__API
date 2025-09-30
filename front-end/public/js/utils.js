@@ -113,3 +113,10 @@ export const apiRequest = async (url, options = {}) => {
     return { status: "error", message: err.message || err };
   }
 };
+
+export const showUserName = () => {
+  if (localStorage.getItem("full_name")) {
+    document.querySelector(".user-name").textContent =
+      localStorage.getItem("full_name");
+  }
+};
