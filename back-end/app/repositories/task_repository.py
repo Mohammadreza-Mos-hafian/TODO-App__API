@@ -1,8 +1,8 @@
-from sqlalchemy import select
+from sqlalchemy import select, desc, func
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.databases import SessionLocal
-from app.models import Task
+from app.models import Task, User
 
 
 class TaskRepository:
@@ -15,6 +15,50 @@ class TaskRepository:
                 session.refresh(task)
 
                 return task.uuid
+            except SQLAlchemyError as err:
+                session.rollback()
+                raise err
+
+    @staticmethod
+    def read(user_uuid: str, page: int = 1, per_page: int = 5, return_total=False):
+        offset_value = (page - 1) * per_page
+
+        with SessionLocal() as session:
+            try:
+                subq = (
+                    select(User.id)
+                    .where(
+                        User.uuid == user_uuid,
+                        User.is_deleted == False
+                    )
+                )
+
+                stmt = (
+                    select(Task)
+                    .where(
+                        Task.is_deleted == False,
+                        Task.user_id.in_(subq)
+                    )
+                    .order_by(desc("created_at"))
+                    .offset(offset_value)
+                    .limit(per_page)
+                    .distinct()
+                )
+
+                total = session.execute(
+                    select(func.count(Task.id))
+                    .where(
+                        Task.user_id.in_(subq),
+                        Task.is_deleted == False
+                    )
+                ).scalar() if return_total else None
+
+                tasks = session.execute(stmt).scalars().all()
+
+                if return_total:
+                    return tasks, total
+
+                return tasks
             except SQLAlchemyError as err:
                 session.rollback()
                 raise err
