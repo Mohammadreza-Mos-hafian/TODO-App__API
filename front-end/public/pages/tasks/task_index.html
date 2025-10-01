@@ -1,104 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link
-      rel="shortcut icon"
-      href="../../images/icons/favicon.png"
-      type="image/x-icon"
-    />
-    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../../css/font.css" />
-    <link rel="stylesheet" href="../../css/app.css" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Task Management | Tasks</title>
-  </head>
-  <body>
-    <header class="header">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container justify-content-between">
-          <h4 class="app_name text-white">
-            <a href="http://127.0.0.1:3000/public/pages/dashboard.html"
-              >Task Management</a
-            >
-          </h4>
+  <link rel="shortcut icon" href="../../images/icons/favicon.png" type="image/x-icon" />
+  <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../../css/font.css" />
+  <link rel="stylesheet" href="../../css/app.css" />
+
+  <title>Task Management | Tasks</title>
+</head>
+
+<body>
+  <header class="header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container justify-content-between">
+        <h4 class="app_name text-white">
+          <a href="http://127.0.0.1:3000/public/pages/dashboard.html">Task Management</a>
+        </h4>
+        <div class="d-flex align-items-center justify-content-center gap-2">
+          <span class="user-name text-white fs-6"></span>
+
+          <button type="button" class="btn text-bg-danger btn-sm" id="logoutBtn">
+            <img src="../../images/icons/turn_off.svg" alt="Turn off" title="Logout" />
+          </button type="button">
         </div>
-      </nav>
-    </header>
-
-    <div class="container mt-5">
-      <h2 class="text-center mb-4">Tasks list</h2>
-
-      <table class="table table-striped text-center table-dark">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Title</th>
-            <th>Status</th>
-            <th>Deadline</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Python</td>
-            <td>
-              <span class="badge text-bg-success">Completed</span>
-            </td>
-            <td>2025-09-16</td>
-            <td>
-              <a href="../tasks/task_edit.html" class="btn btn-primary btn-sm"
-                >Edit</a
-              >
-
-              <a href="#" class="btn btn-danger btn-sm">Delete</a>
-
-              <a
-                href="../files/file_index.html"
-                class="btn btn-secondary btn-sm"
-                >Files</a
-              >
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div>
-        <ul class="pagination justify-content-center">
-          <li class="page-item">
-            <a class="page-link text-bg-dark" href="#">&laquo;</a>
-          </li>
-
-          <li class="page-item">
-            <a class="page-link text-bg-dark" href="#">&lsaquo;</a>
-          </li>
-
-          <li class="page-item">
-            <a class="page-link text-bg-dark" href="#">1</a>
-          </li>
-
-          <li class="page-item">
-            <a class="page-link text-bg-dark" href="#">&rsaquo;</a>
-          </li>
-
-          <li class="page-item">
-            <a class="page-link text-bg-dark" href="#">&raquo;</a>
-          </li>
-        </ul>
       </div>
+    </nav>
+  </header>
+
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Tasks list</h2>
+
+    <table class="table table-striped text-center table-dark">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Deadline</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr class="d-none" id="hiddenRow">
+          <td colspan="5" class="text-danger">
+            No Tasks Found.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div>
+      <ul class="pagination justify-content-center" id="pagination">
+      </ul>
     </div>
+  </div>
 
-    <footer class="text-center mt-5">
-      <p>
-        &copy;<span class="year"></span> Task Management | All rights reserved.
-      </p>
-    </footer>
+  <footer class="text-center mt-5">
+    <p>
+      &copy;<span class="year"></span> Task Management | All rights reserved.
+    </p>
+  </footer>
 
-    <script src="../../js/bootstrap.bundle.min.js"></script>
-    <script src="../../js/app.js"></script>
-  </body>
+  <script src="../../js/bootstrap.bundle.min.js"></script>
+  <script src="../../js/app.js"></script>
+  <script type="module">
+    import { showUserName, apiRequest, showResult, loadTasks } from "../../js/utils.js";
+    showUserName();
+
+    document.addEventListener("DOMContentLoaded", () => {
+      if (
+        !localStorage.getItem("access_token") &&
+        !localStorage.getItem("refresh_token")
+      ) {
+        setTimeout(() => {
+          window.location.assign("http://127.0.0.1:3000/public/index.html");
+        }, 500);
+        return;
+      }
+
+      loadTasks(1, 3);
+    });
+  </script>
+
+</body>
+
 </html>
