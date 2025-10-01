@@ -1,9 +1,9 @@
-import uuid
 from typing import Dict
 
 from sqlalchemy import select, and_
 from sqlalchemy.exc import SQLAlchemyError
 
+from app.enums import TaskStatus
 from app.databases import SessionLocal
 from app.models import User
 
@@ -11,7 +11,7 @@ from markupsafe import escape
 
 from datetime import datetime, timezone
 
-import bcrypt, re
+import bcrypt, re, uuid
 
 
 def encode(param: str):
@@ -74,3 +74,15 @@ def clean_data(data: Dict[str, str]) -> Dict[str, str]:
             data[key] = re.sub(r"\s+", " ", data[key]).strip()
 
     return data
+
+
+def show_task_status(number):
+    return next((status.name.capitalize() for status in TaskStatus if status.value == number), None)
+
+
+def task_status_color(number):
+    colors = ["warning", "info", "success", "danger"]
+
+    index = next((status.value for status in TaskStatus if status.value == number))
+
+    return colors[index]
