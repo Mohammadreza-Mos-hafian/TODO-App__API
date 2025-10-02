@@ -67,5 +67,16 @@ class UserTaskService:
         pass
 
     @staticmethod
-    def delete_task():
-        pass
+    def delete_task(data):
+        try:
+            TaskRepository.delete(data)
+
+            return {
+                "status": "success",
+                "message": "The task deleted successfully."
+            }
+        except SQLAlchemyError as err:
+            return {
+                "status": "error",
+                "errors": str(err)
+            }
