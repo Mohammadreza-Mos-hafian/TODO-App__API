@@ -9,7 +9,7 @@ class TaskSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Task
         load_instance = True
-        exclude = ("id", "is_deleted", "uuid", "created_at", "updated_at", "deleted_at")
+        exclude = ("id", "is_deleted", "created_at", "updated_at", "deleted_at")
 
     @post_dump
     def post_dump_data(self, task, **kwargs):
