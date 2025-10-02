@@ -3,6 +3,9 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app.databases import SessionLocal
 from app.models import Task, User
+from app.utils import now_datatime
+
+from datetime import datetime
 
 
 class TaskRepository:
@@ -59,6 +62,26 @@ class TaskRepository:
                     return tasks, total
 
                 return tasks
+            except SQLAlchemyError as err:
+                session.rollback()
+                raise err
+
+    @staticmethod
+    def delete(task_uuid):
+        with SessionLocal() as session:
+            try:
+                stmt = (
+                    select(Task)
+                    .where(Task.uuid == task_uuid)
+                )
+
+                task: Task = session.execute(stmt).scalars().first()
+
+                task.is_deleted = True
+                task.deleted_at = now_datatime()
+
+                session.add(task)
+                session.commit()
             except SQLAlchemyError as err:
                 session.rollback()
                 raise err
