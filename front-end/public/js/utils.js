@@ -121,6 +121,8 @@ export const showUserName = () => {
   }
 };
 
+/*--------------------------- Pagination --------------------------- */
+
 export const showResult = (number, obj) => {
   const tableRow = document.createElement("tr");
 
@@ -130,11 +132,11 @@ export const showResult = (number, obj) => {
   <td><span class="badge text-bg-${obj.color}">${obj.status}</span></td>
   <td>${obj.deadline}</td>
   <td>
-    <a href="../tasks/task_edit.html" class="btn btn-primary btn-sm">Edit</a>
+    <a href="../tasks/task_edit.html" class="btn btn-primary btn-sm" data-task-uuid="${obj.uuid}">Edit</a>
 
-    <a href="#" class="btn btn-danger btn-sm">Delete</a>
+    <a href="#" class="btn btn-danger btn-sm delete-btn" data-task-uuid="${obj.uuid}">Delete</a>
 
-    <a href="../files/file_index.html" class="btn btn-secondary btn-sm">Files</a>
+    <a href="../files/file_index.html" class="btn btn-secondary btn-sm" data-task-uuid="${obj.uuid}">Files</a>
   </td>
   `;
 
