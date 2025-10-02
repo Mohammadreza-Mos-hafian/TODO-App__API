@@ -28,5 +28,6 @@ class UserTaskView(MethodView):
         pass
 
     @staticmethod
-    def delete():
-        pass
+    def delete(task_uuid):
+        response = UserTaskService.delete_task(task_uuid)
+        return jsonify(response)
