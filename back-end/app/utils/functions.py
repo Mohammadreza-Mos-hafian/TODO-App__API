@@ -19,8 +19,10 @@ def encode(param: str):
     return hash_param.decode()
 
 
-def now_utc():
-    return datetime.now(timezone.utc)
+def now_datatime():
+    time_format = "%Y-%m-%d %H:%M:%S.%f"
+    now = datetime.now().strftime(time_format)
+    return datetime.strptime(now, time_format)
 
 
 def create_uuid4() -> str:
