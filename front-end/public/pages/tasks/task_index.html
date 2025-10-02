@@ -83,10 +83,37 @@
         return;
       }
 
-      loadTasks(1, 3);
+      loadTasks();
     });
-  </script>
 
+    const tableBody = document.querySelector("tbody")
+
+    tableBody.addEventListener("click", async (e) => {
+      if (e.target.classList.contains("delete-btn")) {
+        e.preventDefault()
+
+        const taskUuid = e.target.dataset.taskUuid;
+
+        try {
+          const response = await apiRequest(`http://127.0.0.1:5000/api/tasks/${taskUuid}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          })
+
+          if (response.status !== "error") {
+            e.target.closest("tr").remove();
+          } else {
+            console.error("DB Errors:", response.errors);
+          }
+
+        } catch (err) {
+          console.error("Unexpected error:", err);
+        }
+      }
+    })
+  </script>
 </body>
 
 </html>
