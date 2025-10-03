@@ -5,11 +5,11 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app.enums import TaskStatus
 from app.databases import SessionLocal
-from app.models import User
+from app.models import User, Task
 
 from markupsafe import escape
 
-from datetime import datetime, timezone
+from datetime import datetime, date
 
 import bcrypt, re, uuid
 
@@ -78,13 +78,38 @@ def clean_data(data: Dict[str, str]) -> Dict[str, str]:
     return data
 
 
-def show_task_status(number):
-    return next((status.name.capitalize() for status in TaskStatus if status.value == number), None)
-
-
 def task_status_color(number):
     colors = ["warning", "info", "success", "danger"]
 
     index = next((status.value for status in TaskStatus if status.value == number))
 
     return colors[index]
+
+
+def validate_date(task_uuid, deadline):
+    clean_date = str(deadline).strip().split("-")
+    user_deadline = date(int(clean_date[0]), int(clean_date[1]), int(clean_date[2]))
+
+    with SessionLocal() as session:
+        try:
+            stmt = (
+                select(Task)
+                .where(
+                    Task.uuid == task_uuid,
+                    Task.is_deleted == False
+                )
+            )
+
+            task = session.execute(stmt).scalars().first()
+
+            clean_task_deadline = str(task.deadline).strip().split("-")
+            task_deadline = date(int(clean_task_deadline[0]), int(clean_task_deadline[1]), int(clean_task_deadline[2]))
+
+            if user_deadline == task_deadline:
+                return
+
+            if user_deadline < date.today():
+                raise ValueError(f"The deadline must be after {now_datatime().strftime('%Y-%m-%d')}.")
+        except SQLAlchemyError as err:
+            session.rollback()
+            raise err
