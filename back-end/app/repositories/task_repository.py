@@ -5,8 +5,6 @@ from app.databases import SessionLocal
 from app.models import Task, User
 from app.utils import now_datatime
 
-from datetime import datetime
-
 
 class TaskRepository:
     @staticmethod
@@ -18,6 +16,23 @@ class TaskRepository:
                 session.refresh(task)
 
                 return task.uuid
+            except SQLAlchemyError as err:
+                session.rollback()
+                raise err
+
+    @staticmethod
+    def get_task(task_uuid):
+        with SessionLocal() as session:
+            try:
+                stmt = (
+                    select(Task)
+                    .where(
+                        Task.uuid == task_uuid,
+                        Task.is_deleted == False
+                    )
+                )
+
+                return session.execute(stmt).scalars().first()
             except SQLAlchemyError as err:
                 session.rollback()
                 raise err
@@ -62,6 +77,34 @@ class TaskRepository:
                     return tasks, total
 
                 return tasks
+            except SQLAlchemyError as err:
+                session.rollback()
+                raise err
+
+    @staticmethod
+    def update(task_uuid: str, data):
+        with SessionLocal() as session:
+            try:
+                stmt = (
+                    select(Task)
+                    .where(
+                        Task.uuid == task_uuid,
+                        Task.is_deleted == False
+                    )
+                )
+
+                task = session.execute(stmt).scalars().first()
+
+                if task:
+                    task.title = data["title"] if data["title"] else task.title
+                    task.deadline = data["deadline"] if data["deadline"] else task.deadline
+                    task.status = data["status"] if data["status"] else task.status
+                    task.description = data["description"] if data["description"] else task.description
+
+                    session.commit()
+                else:
+                    raise ValueError("Task not found.")
+
             except SQLAlchemyError as err:
                 session.rollback()
                 raise err
