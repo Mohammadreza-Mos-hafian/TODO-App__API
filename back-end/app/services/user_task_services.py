@@ -6,8 +6,8 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app.databases import SessionLocal
 from app.repositories import TaskRepository
-from app.schemas import CreateSchema, TaskSchema
-from app.utils import show_task_status
+from app.schemas import CreateSchema, TaskSchema, EditSchema
+from app.utils import validate_date
 
 
 class UserTaskService:
@@ -17,6 +17,7 @@ class UserTaskService:
 
         try:
             credentials = schema.load(data, session=SessionLocal)
+
             task = TaskRepository.create(credentials)
 
             return {
@@ -28,6 +29,25 @@ class UserTaskService:
                 "status": "error",
                 "errors": err.messages
             }
+        except SQLAlchemyError as err:
+            return {
+                "status": "DB Error",
+                "errors": str(err)
+            }
+
+    @staticmethod
+    def get_task(data: str):
+        schema = TaskSchema()
+        try:
+            task = TaskRepository.get_task(data)
+
+            if not task:
+                return {
+                    "status": "error",
+                    "errors": "Task not found."
+                }
+
+            return schema.dump(task)
         except SQLAlchemyError as err:
             return {
                 "status": "DB Error",
@@ -58,13 +78,44 @@ class UserTaskService:
             }
         except SQLAlchemyError as err:
             return {
-                "status": "error",
+                "status": "DB Error",
                 "errors": str(err)
             }
 
     @staticmethod
-    def edit_task():
-        pass
+    def edit_task(task_uuid, data):
+        schema = EditSchema()
+
+        try:
+            credentials = schema.load(data)
+
+            if "deadline" in credentials.keys():
+                validate_date(task_uuid, credentials["deadline"])
+
+            TaskRepository.update(task_uuid, data)
+
+            return {
+                "status": "success",
+                "message": "Task edited successfully."
+            }
+
+        except ValidationError as err:
+            return {
+                "status": "error",
+                "errors": err.messages
+            }
+        except ValueError as err:
+            return {
+                "status": "error",
+                "errors": {
+                    "deadline": [str(err)]
+                }
+            }
+        except SQLAlchemyError as err:
+            return {
+                "status": "DB Error",
+                "errors": str(err)
+            }
 
     @staticmethod
     def delete_task(data):
