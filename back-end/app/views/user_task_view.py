@@ -9,7 +9,11 @@ class UserTaskView(MethodView):
     decorators = [jwt_required()]
 
     @staticmethod
-    def get():
+    def get(task_uuid=None):
+        if task_uuid:
+            response = UserTaskService.get_task(task_uuid)
+            return jsonify(response)
+
         data = {
             "page": int(request.args.get("page", 1)),
             "per_page": int(request.args.get("per_page", 5))
@@ -24,8 +28,10 @@ class UserTaskView(MethodView):
         return jsonify(response)
 
     @staticmethod
-    def put():
-        pass
+    def patch(task_uuid):
+        data = request.get_json()
+        response = UserTaskService.edit_task(task_uuid, data)
+        return jsonify(response)
 
     @staticmethod
     def delete(task_uuid):
