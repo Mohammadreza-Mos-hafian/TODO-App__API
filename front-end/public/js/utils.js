@@ -123,20 +123,38 @@ export const showUserName = () => {
 
 /*--------------------------- Pagination --------------------------- */
 
-export const showResult = (number, obj) => {
+const showTaskStatus = (number) => {
+  const statuses = ["Pending", "In progress", "Completed", "Canceled"];
+
+  for (const status of statuses) {
+    if (status === statuses[number]) {
+      return status;
+    }
+  }
+};
+
+export const showTaskInfo = (number, obj) => {
   const tableRow = document.createElement("tr");
 
   const tableData = `
   <td>${number}</td>
   <td>${obj.title}</td>
-  <td><span class="badge text-bg-${obj.color}">${obj.status}</span></td>
+  <td><span class="badge text-bg-${obj.color}">${showTaskStatus(
+    obj.status
+  )}</span></td>
   <td>${obj.deadline}</td>
   <td>
-    <a href="../tasks/task_edit.html" class="btn btn-primary btn-sm" data-task-uuid="${obj.uuid}">Edit</a>
+    <a href="../tasks/task_edit.html?uuid=${
+      obj.uuid
+    }" class="btn btn-primary btn-sm"">Edit</a>
 
-    <a href="#" class="btn btn-danger btn-sm delete-btn" data-task-uuid="${obj.uuid}">Delete</a>
+    <a href="#" class="btn btn-danger btn-sm delete-btn" data-task-uuid="${
+      obj.uuid
+    }">Delete</a>
 
-    <a href="../files/file_index.html" class="btn btn-secondary btn-sm" data-task-uuid="${obj.uuid}">Files</a>
+    <a href="../files/file_index.html?uuid=${
+      obj.uuid
+    }" class="btn btn-secondary btn-sm"">Files</a>
   </td>
   `;
 
@@ -219,7 +237,7 @@ export const loadTasks = async (page = 1, perPage = 5) => {
       let index = (page - 1) * perPage;
 
       tasks.forEach((obj) => {
-        table.appendChild(showResult(index + 1, obj));
+        table.appendChild(showTaskInfo(index + 1, obj));
         index++;
       });
 
