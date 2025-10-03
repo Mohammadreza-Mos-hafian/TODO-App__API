@@ -1,166 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link
-      rel="shortcut icon"
-      href="../../images/icons/favicon.png"
-      type="image/x-icon"
-    />
-    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../../css/font.css" />
-    <link rel="stylesheet" href="../../css/app.css" />
-    <link rel="stylesheet" href="../../css/air-datepicker.min.css" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Task Management | Edit Task</title>
-  </head>
-  <body>
-    <header class="header">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container justify-content-between">
-          <h4 class="app_name text-white">
-            <a href="http://127.0.0.1:3000/public/pages/dashboard.html"
-              >Task Management</a
-            >
-          </h4>
-        </div>
-      </nav>
-    </header>
+  <link rel="shortcut icon" href="../../images/icons/favicon.png" type="image/x-icon" />
+  <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../../css/font.css" />
+  <link rel="stylesheet" href="../../css/app.css" />
+  <link rel="stylesheet" href="../../css/air-datepicker.min.css" />
 
-    <div class="container mt-5">
-      <div class="row justify-content-center">
-        <div class="col-md-8">
-          <h2 class="text-center mb-2">Edit Task:</h2>
+  <title>Task Management | Edit Task</title>
+</head>
 
-          <h4 class="text-center text-info">Python</h4>
+<body>
+  <header class="header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container justify-content-between">
+        <h4 class="app_name text-white">
+          <a href="http://127.0.0.1:3000/public/pages/dashboard.html">Task Management</a>
+        </h4>
+        <div class="d-flex align-items-center justify-content-center gap-2">
+          <span class="user-name text-white fs-6"></span>
 
-          <form
-            action="#"
-            method="POST"
-            enctype="multipart/form-data"
-            class="card p-4 shadow-sm"
-          >
-            <div class="mb-3">
-              <label for="title" class="form-label w-100">
-                Title
-                <input
-                  type="text"
-                  class="form-control"
-                  id="title"
-                  name="title"
-                  value="Python"
-                />
-              </label>
-            </div>
-
-            <div class="mb-3">
-              <label for="deadline" class="form-label w-100">
-                deadline
-                <input
-                  type="text"
-                  class="form-control"
-                  id="deadline"
-                  name="deadline"
-                  placeholder="YYYY-MM-DD"
-                  value="2025-09-16"
-                  readonly
-                />
-              </label>
-            </div>
-
-            <div class="mb-3">
-              <label for="status" class="form-label">Status</label>
-              <select class="form-select" id="status" name="status">
-                <option value="1">PENDING</option>
-                <option value="2">IN PROGRESS</option>
-                <option value="3" selected>COMPLETED</option>
-                <option value="4">CANCELED</option>
-              </select>
-            </div>
-
-            <div class="mb-3">
-              <label for="description" class="form-label">Description</label>
-
-              <textarea
-                class="form-control"
-                id="description"
-                name="description"
-                rows="4"
-              ></textarea>
-            </div>
-
-            <button type="submit" class="btn btn-success w-100 mt-3">
-              Create
-            </button>
-          </form>
+          <button type="button" class="btn text-bg-danger btn-sm" id="logoutBtn">
+            <img src="../../images/icons/turn_off.svg" alt="Turn off" title="Logout" />
+          </button type="button">
         </div>
       </div>
+    </nav>
+  </header>
+
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <h2 class="text-center mb-2">Edit Task:</h2>
+
+        <h4 class="text-center text-info"></h4>
+
+        <div class="alert alert-danger d-none" role="alert"></div>
+
+        <form class="card p-4 shadow-sm" id="editTaskForm">
+          <div class="mb-3">
+            <label for="title" class="form-label w-100">
+              Title
+              <input type="text" class="form-control" id="title" name="title" />
+            </label>
+
+            <span class="text-danger error-message"></span>
+          </div>
+
+          <div class="mb-3">
+            <label for="deadline" class="form-label w-100">
+              deadline
+              <input type="text" class="form-control" id="deadline" name="deadline" placeholder="YYYY-MM-DD" />
+            </label>
+
+            <span class="text-danger error-message"></span>
+          </div>
+
+          <div class="mb-3">
+            <label for="status" class="form-label w-100">
+              Status
+              <select class="form-select" id="status" name="status">
+                <option value="">Choose an option...</option>
+                <option value="0">PENDING</option>
+                <option value="1">IN PROGRESS</option>
+                <option value="2">COMPLETED</option>
+                <option value="3">CANCELED</option>
+              </select>
+            </label>
+
+            <span class="text-danger error-message"></span>
+          </div>
+
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+
+            <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+
+            <span class="text-danger error-message"></span>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100 mt-3">
+            Edit
+          </button>
+        </form>
+      </div>
     </div>
+  </div>
 
-    <footer class="text-center mt-5">
-      <p>
-        &copy;<span class="year"></span> Task Management | All rights reserved.
-      </p>
-    </footer>
+  <footer class="text-center mt-5">
+    <p>
+      &copy;<span class="year"></span> Task Management | All rights reserved.
+    </p>
+  </footer>
 
-    <script src="../../js/bootstrap.bundle.min.js"></script>
-    <script src="../../js/air-datepicker.min.js"></script>
-    <script src="../../js/app.js"></script>
-    <script>
-      new AirDatepicker("#deadline", {
-        autoClose: true,
-        position: "bottom center",
-        isMobile: false,
-        timepicker: false,
-        inputFormat: "yyyy-mm-dd",
-        locale: {
-          days: [
-            "Sunday",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-          ],
-          daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-          daysMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
-          months: [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December",
-          ],
-          monthsShort: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
-          today: "Today",
-          clear: "Clear",
-          dateFormat: "yyyy-MM-dd",
-          firstDay: 0,
-        },
-      });
-    </script>
-  </body>
+  <script src="../../js/bootstrap.bundle.min.js"></script>
+  <script src="../../js/air-datepicker.min.js"></script>
+  <script src="../../js/app.js"></script>
+  <script>
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    new AirDatepicker("#deadline", {
+      autoClose: true,
+      position: "bottom center",
+      isMobile: false,
+      timepicker: false,
+      inputFormat: "yyyy-mm-dd",
+      minDate: today,
+      locale: {
+        days: [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ],
+        daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        daysMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+        months: [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ],
+        monthsShort: [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ],
+        today: "Today",
+        clear: "Clear",
+        dateFormat: "yyyy-MM-dd",
+        firstDay: 0,
+      },
+    });
+  </script>
+
+  <script type="module">
+    import { apiRequest, showUserName, showErrorMessages, refreshErrors } from "../../js/utils.js";
+    const params = new URLSearchParams(window.location.search);
+    const taskUuid = params.get("uuid");
+
+    const statuses = document.querySelectorAll("#status option");
+    const alertElem = document.querySelector(".alert");
+
+    showUserName();
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const response = await apiRequest(
+          `http://127.0.0.1:5000/api/tasks/${taskUuid}`,
+          {
+            method: "GET",
+          }
+        );
+
+        if (response.status !== "success") {
+          console.error("DB Error:", response.errors);
+          return;
+        }
+
+        document.querySelector("h4.text-info").textContent =
+          response.data.title;
+        document.getElementById("title").value = response.data.title;
+        document.getElementById("deadline").value = response.data.deadline;
+        document.querySelector("textarea").textContent =
+          response.data.description;
+
+        for (const status of statuses) {
+          if (status.value == response.data.status) {
+            status.setAttribute("selected", "selected")
+            break;
+          }
+        }
+
+      } catch (err) {
+        console.error("Unexpected error:", err);
+      }
+    });
+
+    document.getElementById("editTaskForm").addEventListener("submit", async (e) => {
+      e.preventDefault()
+
+      refreshErrors();
+
+      try {
+        const response = await apiRequest(`http://127.0.0.1:5000/api/tasks/${taskUuid}`, {
+          method: "PATCH",
+          headers: {
+            "Content-type": "application/json"
+          },
+          body: JSON.stringify({
+            "title": document.getElementById("title").value,
+            "deadline": document.getElementById("deadline").value,
+            "status": document.getElementById("status").value,
+            "description": document.getElementById("description").value,
+          })
+        })
+
+        if (response.data.status === "error") {
+          showErrorMessages(response.data.errors)
+        } else if (response.data.status == "DB Error") {
+          alertElem.textContent = response.data.errors;
+          alertElem.classList.remove("d-none");
+        }else{
+          setTimeout(() => {
+            window.location.assign("http://127.0.0.1:3000/public/pages/tasks/task_index.html");
+          }, 500)
+        }
+
+      } catch (err) {
+        console.error("Unexpected error:", err);
+        alertElem.textContent = "An unknown error has occurred.";
+        alertElem.classList.remove("d-none");
+      }
+    })
+
+  </script>
+</body>
+
 </html>
