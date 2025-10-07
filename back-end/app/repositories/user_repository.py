@@ -17,20 +17,20 @@ class UserRepository:
                 return user
             except SQLAlchemyError as err:
                 session.rollback()
-                raise err
+                raise
 
     @staticmethod
-    def get_user(uuid: str):
+    def get_user(user_uuid: str):
         with SessionLocal() as session:
             try:
                 stmt = (
                     select(User)
                     .where(
-                        User.uuid == uuid,
+                        User.uuid == user_uuid,
                         User.is_deleted == False
                     )
                 )
 
                 return session.execute(stmt).scalars().first()
             except SQLAlchemyError as err:
-                raise err
+                raise
