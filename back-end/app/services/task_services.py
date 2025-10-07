@@ -15,7 +15,7 @@ from app.utils import validate_date, pagination_info
 import os, shutil
 
 
-class UserTaskService:
+class TaskService:
     @staticmethod
     def create_task(data, files=None):
         task_schema = CreateSchema()

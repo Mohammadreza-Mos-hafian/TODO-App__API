@@ -6,7 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from marshmallow import ValidationError
 
-from app.services import UserTaskService
+from app.services import TaskService
 
 
 class TaskView(MethodView):
@@ -16,7 +16,7 @@ class TaskView(MethodView):
     def get(task_uuid=None):
         try:
             if task_uuid:
-                response = UserTaskService.get_task(task_uuid)
+                response = TaskService.get_task(task_uuid)
                 return jsonify(response)
 
             data = {
@@ -24,7 +24,7 @@ class TaskView(MethodView):
                 "per_page": int(request.args.get("per_page", 5))
             }
 
-            response = UserTaskService.show_all_tasks(data)
+            response = TaskService.show_all_tasks(data)
             return jsonify(response), 200
 
         except SQLAlchemyError as err:
@@ -43,7 +43,7 @@ class TaskView(MethodView):
             }
             files = request.files.getlist("files[]")
 
-            response = UserTaskService.create_task(data, files)
+            response = TaskService.create_task(data, files)
             return jsonify(response), 201
 
         except ValidationError as err:
@@ -62,7 +62,7 @@ class TaskView(MethodView):
     def patch(task_uuid):
         try:
             data = request.get_json()
-            response = UserTaskService.edit_task(task_uuid, data)
+            response = TaskService.edit_task(task_uuid, data)
             return jsonify(response), 200
 
         except ValidationError as err:
@@ -80,7 +80,7 @@ class TaskView(MethodView):
     @staticmethod
     def delete(task_uuid):
         try:
-            response = UserTaskService.delete_task(task_uuid)
+            response = TaskService.delete_task(task_uuid)
             return jsonify(response), 200
 
         except ValueError as err:
