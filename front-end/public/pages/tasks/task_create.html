@@ -1,206 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="shortcut icon"
+      href="../../images/icons/favicon.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/font.css" />
+    <link rel="stylesheet" href="../../css/app.css" />
+    <link rel="stylesheet" href="../../css/air-datepicker.min.css" />
 
-  <link rel="shortcut icon" href="../../images/icons/favicon.png" type="image/x-icon" />
-  <link rel="stylesheet" href="../../css/bootstrap.min.css" />
-  <link rel="stylesheet" href="../../css/font.css" />
-  <link rel="stylesheet" href="../../css/app.css" />
-  <link rel="stylesheet" href="../../css/air-datepicker.min.css" />
+    <title>Task Management | Create Task</title>
+  </head>
 
-  <title>Task Management | Create Task</title>
-</head>
+  <body>
+    <header class="header">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container justify-content-between">
+          <h4 class="app_name text-white">
+            <a href="http://127.0.0.1:3000/public/pages/dashboard.html"
+              >Task Management</a
+            >
+          </h4>
+          <div class="d-flex align-items-center justify-content-center gap-2">
+            <span class="user-name text-white fs-6"></span>
 
-<body>
-  <header class="header">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <div class="container justify-content-between">
-        <h4 class="app_name text-white">
-          <a href="http://127.0.0.1:3000/public/pages/dashboard.html">Task Management</a>
-        </h4>
-        <div class="d-flex align-items-center justify-content-center gap-2">
-          <span class="user-name text-white fs-6"></span>
+            <button
+              type="button"
+              class="btn text-bg-danger btn-sm"
+              id="logoutBtn"
+            >
+              <img
+                src="../../images/icons/turn_off.svg"
+                alt="Turn off"
+                title="Logout"
+              />
+            </button>
+          </div>
+        </div>
+      </nav>
+    </header>
 
-          <button type="button" class="btn text-bg-danger btn-sm" id="logoutBtn">
-            <img src="../../images/icons/turn_off.svg" alt="Turn off" title="Logout" />
-          </button type="button">
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <h2 class="text-center mb-4">New Task</h2>
+
+          <div class="alert alert-danger d-none" role="alert"></div>
+
+          <form
+            enctype="multipart/form-data"
+            class="card p-4 shadow-sm"
+            id="createTaskForm"
+          >
+            <div class="mb-3">
+              <label for="title" class="form-label w-100">
+                Title
+                <input
+                  type="text"
+                  class="form-control"
+                  id="title"
+                  name="title"
+                />
+              </label>
+
+              <span class="text-danger error-message"></span>
+            </div>
+
+            <div class="mb-3">
+              <label for="deadline" class="form-label w-100">
+                deadline
+                <input
+                  type="text"
+                  class="form-control"
+                  id="deadline"
+                  name="deadline"
+                  placeholder="YYYY-MM-DD"
+                />
+              </label>
+
+              <span class="text-danger error-message"></span>
+            </div>
+
+            <div class="mb-3">
+              <label for="files" class="form-label w-100">
+                Files
+                <input
+                  type="file"
+                  name="files[]"
+                  class="form-control me-2"
+                  id="files"
+                  multiple="multiple"
+                />
+              </label>
+
+              <span class="text-danger error-message"></span>
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+
+              <textarea
+                class="form-control"
+                id="description"
+                name="description"
+                rows="4"
+              ></textarea>
+
+              <span class="text-danger error-message"></span>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100 mt-3">
+              Create
+            </button>
+          </form>
         </div>
       </div>
-    </nav>
-  </header>
-
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <h2 class="text-center mb-4">New Task</h2>
-
-        <div class="alert alert-danger d-none" role="alert"></div>
-
-        <form enctype="multipart/form-data" class="card p-4 shadow-sm" id="createTaskForm">
-          <div class="mb-3">
-            <label for="title" class="form-label w-100">
-              Title
-              <input type="text" class="form-control" id="title" name="title" />
-            </label>
-
-            <span class="text-danger error-message"></span>
-          </div>
-
-          <div class="mb-3">
-            <label for="deadline" class="form-label w-100">
-              deadline
-              <input type="text" class="form-control" id="deadline" name="deadline" placeholder="YYYY-MM-DD" />
-            </label>
-
-            <span class="text-danger error-message"></span>
-          </div>
-
-          <div class="mb-3">
-            <label for="files" class="form-label w-100">
-              Files
-              <input type="file" name="files" class="form-control me-2" id="files" multiple="multiple" />
-            </label>
-
-            <span class="text-danger error-message"></span>
-          </div>
-
-          <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-
-            <textarea class="form-control" id="description" name="description" rows="4"></textarea>
-
-            <span class="text-danger error-message"></span>
-          </div>
-
-          <button type="submit" class="btn btn-success w-100 mt-3">
-            Create
-          </button>
-        </form>
-      </div>
     </div>
-  </div>
 
-  <footer class="text-center mt-5">
-    <p>
-      &copy;<span class="year"></span> Task Management | All rights reserved.
-    </p>
-  </footer>
+    <footer class="text-center mt-5">
+      <p>
+        &copy;<span class="year"></span> Task Management | All rights reserved.
+      </p>
+    </footer>
 
-  <script src="../../js/bootstrap.bundle.min.js"></script>
-  <script src="../../js/air-datepicker.min.js"></script>
-  <script src="../../js/app.js"></script>
-  <script>
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    <script src="../../js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/air-datepicker.min.js"></script>
+    <script src="../../js/app.js"></script>
+    <script>
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
 
-    new AirDatepicker("#deadline", {
-      autoClose: true,
-      position: "bottom center",
-      timepicker: false,
-      inputFormat: "yyyy-mm-dd",
-      minDate: today,
-      locale: {
-        days: [
-          "Sunday",
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-        ],
-        daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-        daysMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
-        months: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-          "August",
-          "September",
-          "October",
-          "November",
-          "December",
-        ],
-        monthsShort: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ],
-        today: "Today",
-        clear: "Clear",
-        dateFormat: "yyyy-MM-dd",
-        firstDay: 0,
-      },
-    });
-  </script>
+      new AirDatepicker("#deadline", {
+        autoClose: true,
+        position: "bottom center",
+        timepicker: false,
+        inputFormat: "yyyy-mm-dd",
+        minDate: today,
+        locale: {
+          days: [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+          ],
+          daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+          daysMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+          months: [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+          ],
+          monthsShort: [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ],
+          today: "Today",
+          clear: "Clear",
+          dateFormat: "yyyy-MM-dd",
+          firstDay: 0,
+        },
+      });
+    </script>
 
-  <script type="module">
-    import {
-      apiRequest,
-      showErrorMessages,
-      refreshErrors,
-      showUserName
-    } from "../../js/utils.js";
-    showUserName();
-    
-    const alertElem = document.querySelector(".alert");
+    <script type="module">
+      import {
+        apiRequest,
+        showErrorMessages,
+        refreshErrors,
+        showUserName,
+      } from "../../js/utils.js";
 
-    document
-      .getElementById("createTaskForm")
-      .addEventListener("submit", async (e) => {
-        e.preventDefault();
+      const alertElem = document.querySelector(".alert");
 
-        refreshErrors();
+      document.addEventListener("DOMContentLoaded", () => {
+        showUserName();
 
-        try {
-          const response = await apiRequest(
-            "http://127.0.0.1:5000/api/tasks",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                title: document.getElementById("title").value,
-                deadline: document.getElementById("deadline").value,
-                description: document.getElementById("description").value,
-              }),
-            }
-          );
-
-          if (response.data.status === "success") {
-            setTimeout(() => {
-              window.location.assign(
-                "http://127.0.0.1:3000/public/pages/tasks/task_index.html"
-              );
-            }, 500);
-          } else if (response.data.status === "error") {
-            showErrorMessages(response.data.errors);
-          } else if (response.data.status == "DB Error") {
-            alertElem.textContent = response.data.errors;
-            alertElem.classList.remove("d-none");
-          }
-        } catch (err) {
-          console.error("Unexpected error:", err);
-          alertElem.textContent = "An unknown error has occurred.";
-          alertElem.classList.remove("d-none");
+        if (
+          !localStorage.getItem("access_token") &&
+          !localStorage.getItem("refresh_token")
+        ) {
+          setTimeout(() => {
+            window.location.assign("http://127.0.0.1:3000/public/index.html");
+          }, 500);
         }
       });
-  </script>
-</body>
 
+      document
+        .getElementById("createTaskForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          refreshErrors();
+
+          const formData = new FormData(
+            document.getElementById("createTaskForm")
+          );
+
+          if (!formData.get("files[]").name) {
+            formData.delete("files[]");
+          }
+
+          try {
+            const response = await apiRequest(
+              "http://127.0.0.1:5000/api/tasks",
+              {
+                method: "POST",
+                body: formData,
+              }
+            );
+
+            if (response.data.status === "error") {
+              showErrorMessages(response.data.errors);
+            } else if (
+              response.data.status == "DB Error" ||
+              response.data.status === "Upload Error"
+            ) {
+              alertElem.textContent = response.data.errors;
+              alertElem.classList.remove("d-none");
+            } else {
+              setTimeout(() => {
+                window.location.assign(
+                  "http://127.0.0.1:3000/public/pages/tasks/task_index.html"
+                );
+              }, 500);
+            }
+          } catch (err) {
+            console.error("Unexpected error:", err);
+            alertElem.textContent = "An unknown error has occurred.";
+            alertElem.classList.remove("d-none");
+          }
+        });
+    </script>
+  </body>
 </html>
