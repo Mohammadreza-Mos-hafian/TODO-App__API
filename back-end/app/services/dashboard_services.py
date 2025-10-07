@@ -15,7 +15,4 @@ class DashboardService:
                 "full_name": f"{data.first_name} {data.last_name}"
             }
         except SQLAlchemyError as err:
-            return {
-                "status": "DB Error",
-                "errors": str(err)
-            }
+            raise
