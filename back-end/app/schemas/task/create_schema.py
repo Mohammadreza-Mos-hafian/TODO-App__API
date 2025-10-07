@@ -28,7 +28,7 @@ class CreateSchema(SQLAlchemyAutoSchema):
         deadline = date(int(user_deadline[0]), int(user_deadline[1]), int(user_deadline[2]))
 
         if deadline < date.today():
-            raise ValidationError(f"The deadline must be after {now_datatime().strftime('%Y-%m-%d')}.")
+            raise ValidationError(f"Deadline must be after {now_datatime().strftime('%Y-%m-%d')}.")
 
     @pre_load
     def pre_load_data(self, data, **kwargs):

@@ -1,4 +1,4 @@
-from marshmallow import post_dump, pre_dump
+from marshmallow import post_dump
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 from app.models import Task
