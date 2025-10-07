@@ -2,6 +2,10 @@ from flask.views import View
 from flask import jsonify, request
 from flask_jwt_extended import jwt_required
 
+from sqlalchemy.exc import SQLAlchemyError
+
+from marshmallow import ValidationError
+
 from app.services import AuthService
 
 
@@ -28,17 +32,54 @@ class AuthView(View):
     # ____________________________________________________ Register ____________________________________________________
     @staticmethod
     def register():
-        data = request.get_json()
-        response = AuthService.register_user(data)
-        return response
+        try:
+            data = request.get_json()
+            response = AuthService.register_user(data)
+            return jsonify(response), 201
 
+        except ValidationError as err:
+            return jsonify({
+                "status": "error",
+                "errors": err.messages
+            }), 400
+
+        except ValueError as err:
+            return jsonify({
+                "status": "Auth Error",
+                "errors": str(err)
+            }), 500
+
+        except SQLAlchemyError as err:
+            return jsonify({
+                "status": "DB Error",
+                "errors": str(err)
+            }), 500
         # ____________________________________________________ Login ____________________________________________________
 
     @staticmethod
     def login():
-        data = request.get_json()
-        response = AuthService.login_user(data)
-        return response
+        try:
+            data = request.get_json()
+            response = AuthService.login_user(data)
+            return jsonify(response), 200
+
+        except ValidationError as err:
+            return jsonify({
+                "status": "error",
+                "errors": err.messages
+            }), 400
+
+        except ValueError as err:
+            return jsonify({
+                "status": "Auth Error",
+                "errors": str(err)
+            }), 500
+
+        except SQLAlchemyError as err:
+            return jsonify({
+                "status": "DB Error",
+                "errors": str(err)
+            }), 500
 
     @staticmethod
     @jwt_required(refresh=True)
