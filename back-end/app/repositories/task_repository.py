@@ -8,17 +8,10 @@ from app.utils import now_datatime
 
 class TaskRepository:
     @staticmethod
-    def create(task: Task):
-        with SessionLocal() as session:
-            try:
-                session.add(task)
-                session.commit()
-                session.refresh(task)
-
-                return task.uuid
-            except SQLAlchemyError as err:
-                session.rollback()
-                raise err
+    def create(task: Task, session: SessionLocal):
+        session.add(task)
+        session.flush()
+        return task.uuid, task.id
 
     @staticmethod
     def get_task(task_uuid):
@@ -35,7 +28,7 @@ class TaskRepository:
                 return session.execute(stmt).scalars().first()
             except SQLAlchemyError as err:
                 session.rollback()
-                raise err
+                raise
 
     @staticmethod
     def read(user_uuid: str, page: int = 1, per_page: int = 5, return_total=False):
@@ -60,7 +53,6 @@ class TaskRepository:
                     .order_by(desc("created_at"))
                     .offset(offset_value)
                     .limit(per_page)
-                    .distinct()
                 )
 
                 total = session.execute(
@@ -107,7 +99,7 @@ class TaskRepository:
 
             except SQLAlchemyError as err:
                 session.rollback()
-                raise err
+                raise
 
     @staticmethod
     def delete(task_uuid):
@@ -120,11 +112,23 @@ class TaskRepository:
 
                 task: Task = session.execute(stmt).scalars().first()
 
-                task.is_deleted = True
-                task.deleted_at = now_datatime()
+                if task:
+                    task.is_deleted = True
+                    task.deleted_at = now_datatime()
 
-                session.add(task)
-                session.commit()
+                    files = task.files
+                    files_path = ""
+
+                    if files:
+                        for file in files:
+                            file.is_deleted = True
+                            file.deleted_at = now_datatime()
+                            files_path = file.file_path
+
+                    session.commit()
+                    return files_path
+                else:
+                    raise ValueError("Task not found.")
             except SQLAlchemyError as err:
                 session.rollback()
-                raise err
+                raise
