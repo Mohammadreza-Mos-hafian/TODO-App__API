@@ -29,21 +29,12 @@ class AuthService:
                 "access_token": JWTService.create_access_token(str(user.uuid)),
                 "refresh_token": JWTService.create_refresh_token(str(user.uuid))
             }
-        except ValidationError as err:
-            return {
-                "status": "error",
-                "errors": err.messages
-            }
-        except SQLAlchemyError as err:
-            return {
-                "status": "DB Error",
-                "errors": str(err)
-            }
+
         except ValueError as err:
-            return {
-                "status": "Auth Error",
-                "errors": str(err)
-            }
+            raise
+
+        except SQLAlchemyError as err:
+            raise
 
     @staticmethod
     def login_user(data):
@@ -59,21 +50,11 @@ class AuthService:
                 "refresh_token": JWTService.create_refresh_token(str(current_user.uuid))
             }
 
-        except ValidationError as err:
-            return {
-                "status": "error",
-                "errors": err.messages
-            }
-        except SQLAlchemyError as err:
-            return {
-                "status": "DB Error",
-                "errors": str(err)
-            }
         except ValueError as err:
-            return {
-                "status": "Auth Error",
-                "errors": str(err)
-            }
+            raise
+
+        except SQLAlchemyError as err:
+            raise
 
     @staticmethod
     def create_new_access_token():
