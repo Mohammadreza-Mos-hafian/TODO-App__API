@@ -1,8 +1,6 @@
 from flask_jwt_extended import get_jwt_identity
 from flask import make_response, jsonify
 
-from marshmallow import ValidationError
-
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.schemas import RegisterSchema, LoginSchema

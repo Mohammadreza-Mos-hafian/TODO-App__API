@@ -2,20 +2,13 @@ from flask import jsonify, request
 from flask.views import MethodView
 from flask_jwt_extended import jwt_required
 
-from sqlalchemy.exc import SQLAlchemyError
-
 from app.services import DashboardService
+from app.utils import error_handler
 
 
 class DashboardView(MethodView):
-    @jwt_required()
-    def get(self):
-        try:
-            response = DashboardService.get_user_name()
-            return jsonify(response), 200
+    decorators = [error_handler, jwt_required()]
 
-        except SQLAlchemyError as err:
-            return jsonify({
-                "status": "DB Error",
-                "errors": str(err)
-            }), 500
+    def get(self):
+        response = DashboardService.get_user_name()
+        return jsonify(response), 200

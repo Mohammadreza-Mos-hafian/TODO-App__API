@@ -133,12 +133,9 @@
 
             const data = await response.json();
 
-            if (data.status == "error") {
+            if (data.status == "error" && response.status === 400) {
               showErrorMessages(data.errors);
-            } else if (
-              data.status === "Auth Error" ||
-              data.status === "DB Error"
-            ) {
+            } else if (data.status === "error" || data.status === "DB Error") {
               alertElem.textContent = data.errors;
               alertElem.classList.remove("d-none");
             } else {

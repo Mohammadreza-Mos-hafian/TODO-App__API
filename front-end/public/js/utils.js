@@ -42,6 +42,8 @@ export const refreshErrors = () => {
     elem.textContent = "";
     elem.classList.remove("text-danger");
   });
+
+  document.querySelector(".alert").classList.add("d-none")
 };
 
 /*--------------------------- Redirect if Authenticated --------------------------- */
