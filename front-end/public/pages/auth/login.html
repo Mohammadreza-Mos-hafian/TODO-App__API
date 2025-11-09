@@ -20,7 +20,7 @@
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container justify-content-between">
           <h4 class="app_name text-white">
-            <a href="http://127.0.0.1:3000/public/index.html"
+            <a href="http://localhost:3000/public/index.html"
               >Task Management</a
             >
           </h4>
@@ -118,7 +118,7 @@
 
           try {
             const response = await fetch(
-              "http://127.0.0.1:5000/api/auth/login",
+              "http://localhost:5000/api/auth/login",
               {
                 method: "POST",
                 headers: {
@@ -144,7 +144,7 @@
 
               setTimeout(() => {
                 window.location.assign(
-                  "http://127.0.0.1:3000/public/pages/dashboard.html"
+                  "http://localhost:3000/public/pages/dashboard.html"
                 );
               }, 500);
             }

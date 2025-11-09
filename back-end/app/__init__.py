@@ -19,7 +19,7 @@ load_dotenv()
 def create_app():
     app = Flask(__name__)
 
-    CORS(app, supports_credentials=True, expose_headers=["Content-Disposition"], origins=["http://127.0.0.1:3000"])
+    CORS(app, supports_credentials=True, expose_headers=["Content-Disposition"], origins=["http://localhost:3000"])
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(dash_bp)

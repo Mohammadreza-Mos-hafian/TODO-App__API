@@ -14,7 +14,7 @@ if (document.getElementById("logoutBtn")) {
     localStorage.removeItem("full_name");
 
     setTimeout(() => {
-      window.location.assign("http://127.0.0.1:3000/public/index.html");
+      window.location.assign("http://localhost:3000/public/index.html");
     }, 500);
   });
 }

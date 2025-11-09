@@ -22,7 +22,7 @@
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container justify-content-between">
           <h4 class="app_name text-white">
-            <a href="http://127.0.0.1:3000/public/pages/dashboard.html"
+            <a href="http://localhost:3000/public/pages/dashboard.html"
               >Task Management</a
             >
           </h4>
@@ -207,7 +207,7 @@
           !localStorage.getItem("refresh_token")
         ) {
           setTimeout(() => {
-            window.location.assign("http://127.0.0.1:3000/public/index.html");
+            window.location.assign("http://localhost:3000/public/index.html");
           }, 500);
         }
 
@@ -215,7 +215,7 @@
 
         try {
           const response = await apiRequest(
-            `http://127.0.0.1:5000/api/tasks/${taskUuid}`,
+            `http://localhost:5000/api/tasks/${taskUuid}`,
             {
               method: "GET",
             }
@@ -253,7 +253,7 @@
 
           try {
             const response = await apiRequest(
-              `http://127.0.0.1:5000/api/tasks/${taskUuid}`,
+              `http://localhost:5000/api/tasks/${taskUuid}`,
               {
                 method: "PATCH",
                 headers: {
@@ -276,7 +276,7 @@
             } else {
               setTimeout(() => {
                 window.location.assign(
-                  "http://127.0.0.1:3000/public/pages/tasks/task_index.html"
+                  "http://localhost:3000/public/pages/tasks/task_index.html"
                 );
               }, 500);
             }

@@ -18,7 +18,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <div class="container d-flex justify-content-between">
         <h4 class="app_name text-white">
-          <a href="http://127.0.0.1:3000/public/pages/dashboard.html">Task Management</a>
+          <a href="http://localhost:3000/public/pages/dashboard.html">Task Management</a>
         </h4>
         <div class="d-flex align-items-center justify-content-center gap-2">
           <span class="user-name text-white fs-6"></span>
@@ -58,12 +58,12 @@
     document.addEventListener("DOMContentLoaded", async () => {
       if (!localStorage.getItem("access_token") && !localStorage.getItem("refresh_token")) {
         setTimeout(() => {
-          window.location.assign("http://127.0.0.1:3000/public/index.html")
+          window.location.assign("http://localhost:3000/public/index.html")
         }, 500);
         return;
       }
       try {
-        const response = await apiRequest("http://127.0.0.1:5000/api/dashboard/home", {
+        const response = await apiRequest("http://localhost:5000/api/dashboard/home", {
           method: "GET",
           headers: {
             "Content-type": "application/json"

@@ -6,8 +6,8 @@ const togglePasswordType = (input, icon) => {
   icon.setAttribute(
     "src",
     type === "text"
-      ? "http://127.0.0.1:3000/public/images/icons/eye_invisible.png"
-      : "http://127.0.0.1:3000/public/images/icons/eye_visible.png"
+      ? "http://localhost:3000/public/images/icons/eye_invisible.png"
+      : "http://localhost:3000/public/images/icons/eye_visible.png"
   );
 };
 
@@ -53,7 +53,7 @@ export const isAuthenticated = () => {
     if (localStorage.getItem("access_token")) {
       setTimeout(() => {
         window.location.assign(
-          "http://127.0.0.1:3000/public/pages/dashboard.html"
+          "http://localhost:3000/public/pages/dashboard.html"
         );
       }, 500);
     }
@@ -81,7 +81,7 @@ export const apiRequest = async (url, options = {}) => {
         return { status: "error", message: "No refresh token" };
       }
 
-      const refreshRes = await fetch("http://127.0.0.1:5000/api/auth/refresh", {
+      const refreshRes = await fetch("http://localhost:5000/api/auth/refresh", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -240,7 +240,7 @@ export const loadData = async (page = 1, perPage = 5, pageName) => {
 
   try {
     const response = await apiRequest(
-      `http://127.0.0.1:5000/api/${pageName}?page=${page}&per_page=${perPage}${taskUuid}`,
+      `http://localhost:5000/api/${pageName}?page=${page}&per_page=${perPage}${taskUuid}`,
       { method: "GET" }
     );
 
