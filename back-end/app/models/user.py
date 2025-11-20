@@ -28,11 +28,9 @@ class User(Base):
     email: Mapped[str] = mapped_column(String(64), nullable=False)
     password: Mapped[str] = mapped_column(String, nullable=False)
     uuid: Mapped[UUID] = mapped_column(Uuid, nullable=False)
-    is_deleted: Mapped[bool] = mapped_column(Boolean, nullable=False, server_default=text('false'))
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False,
                                                  server_default=text('CURRENT_TIMESTAMP'))
     updated_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, onupdate=func.now(),
                                                  server_default=text('CURRENT_TIMESTAMP'))
-    deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime)
 
     tasks: Mapped[list['Task']] = relationship('Task', back_populates='user')
