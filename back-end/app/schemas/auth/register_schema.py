@@ -11,7 +11,7 @@ class RegisterSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = User
         load_instance = True
-        exclude = ("id", "created_at", "updated_at", "deleted_at")
+        exclude = ("id", "created_at", "updated_at")
 
     first_name = fields.Str(required=True, validate=validate.Length(min=1, max=32,
                                                                     error="The first name must be between 1 and 32 characters."))
@@ -35,8 +35,8 @@ class RegisterSchema(SQLAlchemyAutoSchema):
             error="The password must be between 1 and 255 characters."
         ),
         validate.Regexp(
-            r"^(?=(?:.*[a-zA-Z]){8,})(?=.*\d)[a-zA-Z0-9@_\-$]+$",
-            error="Use at least 8 letters with a number. Allowed symbols: (@, _, -, $)"
+            r"^(?=(?:.*[a-zA-Z]){3,})(?=.*\d)[a-zA-Z0-9@_\-$]+$",
+            error="Use at least 3 letters with a number. Allowed symbols: (@, _, -, $)"
         )
     ])
     confirmation_password = fields.Str(required=True, load_only=True,

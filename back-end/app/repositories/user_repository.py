@@ -25,10 +25,7 @@ class UserRepository:
             try:
                 stmt = (
                     select(User)
-                    .where(
-                        User.uuid == user_uuid,
-                        User.is_deleted == False
-                    )
+                    .where(User.uuid == user_uuid)
                 )
 
                 return session.execute(stmt).scalars().first()

@@ -1,20 +1,17 @@
+import bcrypt
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.databases import SessionLocal
 from app.models import User
 
-import bcrypt
-
 
 def check_unique_email(email: str):
     with SessionLocal() as session:
         try:
             stmt = (
-                select(User).where(
-                    User.email == email,
-                    User.is_deleted == False
-                )
+                select(User)
+                .where(User.email == email)
             )
 
             if session.execute(stmt).scalar():
@@ -30,10 +27,7 @@ def check_user(email: str, password: str):
         try:
             stmt = (
                 select(User)
-                .where(
-                    User.email == email,
-                    User.is_deleted == False
-                )
+                .where(User.email == email)
             )
 
             user: User = session.execute(stmt).scalars().first()
