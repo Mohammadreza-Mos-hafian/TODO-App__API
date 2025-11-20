@@ -191,12 +191,9 @@
               alertElem.textContent = data.errors;
               alertElem.classList.remove("d-none");
             } else {
-              localStorage.setItem("access_token", data.access_token);
-              localStorage.setItem("refresh_token", data.refresh_token);
-
               setTimeout(() => {
                 window.location.assign(
-                  "http://localhost:3000/public/pages/dashboard.html"
+                  "http://localhost:3000/public/pages/auth/login.html"
                 );
               }, 500);
             }
